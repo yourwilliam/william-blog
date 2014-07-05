@@ -1,21 +1,21 @@
-title:            Site Title
-description:      Describe your website here.
+title:            William's blog
+description:      made by pengjunjie (william valentine)
 logo:             site-logo.png
 disqus_shortname:
 search:           true
 # Change url to your domain. Leave localhost server or blank when working locally.
 # You don't need to specify the protocol if you want it available on http and https. Example: //localhost:4000
-url:              http://localhost:4000
+url:              http://pengjunjie.com
 
 # Owner/author information
 owner:
-  name:           Your Name
+  name:           yourwilliam
   avatar:         bio-photo.jpg
-  email:          you@email.com
+  email:          yourwilliam@email.com
   # Social networking links used in footer. Update and remove as you like.
   twitter:
   facebook:
-  github:
+  github:         yourwilliam
   stackexchange:
   linkedin:
   instagram:
@@ -37,14 +37,14 @@ links:
     url: /about/
   - title: Articles
     url: /articles/
-  - title: Theme Setup
-    url: /theme-setup/
-  - title: Made Mistakes
-    url: http://mademistakes.com
+#  - title: Theme Setup
+#    url: /theme-setup/
+  - title: My Wedding
+    url: http://wedding.pengjunjie.com
     external: true
 
 # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-timezone:    America/New_York
+timezone:    Asia/Shanghai
 future:      true
 pygments:    true
 #highlighter: pygments
