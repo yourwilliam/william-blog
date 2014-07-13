@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Jekylk markdown 入门
+title: Jekylk markdown入门
 description: "markdown语法入门学习，留给自己写blog用"
 modified: 2014-07-13
 category: articles
@@ -11,6 +11,9 @@ image:
 comments: true
 share: true
 ---
+
+##特别注意 
+特别需要注意，部分markdown标签，需要在上面一行进行空行，否则无法识别。
 
 ## 1. 几种常用的表达方式
 
@@ -175,6 +178,7 @@ link: http://mademistakes.com
 Pygments代码风格使用文件/assets/less/pygments.less，通过main.less来进行编译
 
 CSS风格
+
 {% highlight css %}
 #container {
     float: left;
@@ -185,6 +189,7 @@ CSS风格
 
 
 HTML风格
+
 {% highlight html %}
 {% raw %}
 <nav class="pagination" role="navigation">
@@ -201,6 +206,7 @@ HTML风格
 这其中的{% raw %}就是显示嵌入滚动条的意思。
 
 ruby风格
+
 {% highlight ruby %}
 module Jekyll
   class TagIndex < Page
@@ -225,7 +231,7 @@ end
 如果想深入学习可以参考 [pygments主页](http://pygments.org)
 一种将源码更漂亮的表达的方式
 
-3. Standart Code Block
+###7.3 Standart Code Block
 
 {% raw %}
     <nav class="pagination" role="navigation">
@@ -236,18 +242,18 @@ end
             <a href="{{ site.url }}{{ page.next.url }}" class="btn" title="{{ page.next.title }}">Next article</a>
         {% endif %}
     </nav><!-- /.pagination -->
-    {% endraw %}
+{% endraw %}
 
-标准的代码块模式直接放在{% raw %} 中就可以了。
+标准的代码块模式直接放在`{% raw %}` 中就可以了。
 
-4. Fenced Code Blocks
+###7.4 Fenced Code Blocks
 另一种代码块模式
 
 位于 /assets/less/coderay.less 处并在main.less 处编译和倒入
 同样在_config.yml 也可以对coderay进行相关的配置
 
 这种配置方法也比较有意思
-css类型使用如下的表示方法
+####css类型使用如下的表示方法
 
 ~~~ css
 #container {
@@ -258,7 +264,8 @@ css类型使用如下的表示方法
 ~~~
 
 
-html如下：
+####html如下：
+
 ~~~ html
 {% raw %}<nav class="pagination" role="navigation">
     {% if page.previous %}
@@ -270,7 +277,8 @@ html如下：
 </nav><!-- /.pagination -->{% endraw %}
 ~~~
 
-ruby如下
+####ruby如下
+
 ~~~ ruby
 module Jekyll
   class TagIndex < Page
