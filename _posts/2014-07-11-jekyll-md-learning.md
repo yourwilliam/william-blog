@@ -42,7 +42,7 @@ H<sub>2</sub>O  小字体  水
 <abbr title="cascading stylesheets">CSS<abbr>  注释，当鼠标停止在上面的时候会进行显示。
 
 ### 链接插入
-`[这儿跳转到我的主页](http://pengjunjie.com/)`
+
 [这儿跳转到我的主页](http://pengjunjie.com/)
 
 ### 图片嵌入
@@ -55,6 +55,7 @@ H<sub>2</sub>O  小字体  水
 
 ### 列表模式
 列表模式，其中还包含子列表
+
 1. Item one
    1. sub item one
    2. sub item two
@@ -62,6 +63,7 @@ H<sub>2</sub>O  小字体  水
 2. Item two
 
 一般列表
+
 * Item one
 * Item two
 * Item three
@@ -81,8 +83,9 @@ H<sub>2</sub>O  小字体  水
 
 
 ### 按钮button
+
 <div markdown="0"><a href="#" class="btn">This is a button</a></div>
-`<div markdown="0"><a href="#" class="btn">This is a button</a></div>`
+
 这是一个按钮
 按钮只需要使用class=btn就可以了，应该是这么定义的。
 
@@ -117,55 +120,57 @@ H<sub>2</sub>O  小字体  水
 在一个figure中的图片会根据图片的多少和大小来自动的排列。
 
 ##3 在顶部嵌入图片
-{% raw %}
----
-layout: post
-title: "Post with Large Feature Image and Text"
-description: "Custom written post descriptions are the way to go... if you're not lazy."
-category: articles
-tags: [sample post, readability]
-modified: 2013-06-30
-image:
-  feature: so-simple-sample-image-3.jpg
-  credit: Michael Rose
-  creditlink: http://mademistakes.com
-comments: true
-share: true
-—--
-{% endraw %}
+
+    {% raw %}
+     ---
+     layout: post
+     title: "Post with Large Feature Image and Text"
+     description: "Custom written post descriptions are the way to go... if you're not lazy."
+     category: articles
+     tags: [sample post, readability]
+     modified: 2013-06-30
+     image:
+       feature: so-simple-sample-image-3.jpg
+       credit: Michael Rose
+       creditlink: http://mademistakes.com
+     comments: true
+     share: true
+     —--
+    {% endraw %}
 
 这个嵌入做的是在文档的开头上部嵌入一个图片，来做类似一个banner的效果。 可以看到也可以添加自己的credit 以及相应的图片链接。
 
-##5 嵌入视频
+##4 嵌入视频
 
 {% highlight html %}
-<iframe width="560" height="315" src="http://www.youtube.com/embed/SqYiglufb8Y" frameborder="0"> </iframe>
+ <iframe width="560" height="315" src="http://www.youtube.com/embed/SqYiglufb8Y" frameborder="0"> </iframe>
 {% endhighlight %}
+
 这样就可以嵌入视频了，不知道国内的优酷可以不可以，这样倒是可以嵌入google地图的，后面有时间看看能不能嵌入一个优酷视频
 
-##6 页面标题链接
+##5 页面标题链接
 
 
 对于页面标题链接可以直接使用在头部使用 link标签来进行超链接，如下所示。
 
-{% raw %}
----
-layout: post
-title: "Sample Link Post"
-description: "Example and code for using link posts."
-category: articles
-tags: [sample post, link post]
-comments: true
-link: http://mademistakes.com 
----
-{% endraw %}
+    {% raw %}
+      ---
+      layout: post
+      title: "Sample Link Post"
+      description: "Example and code for using link posts."
+      category: articles
+      tags: [sample post, link post]
+      comments: true
+      link: http://mademistakes.com 
+      ---
+    {% endraw %}
 
 他会自动为链接做一个剪头指示超链接，挺有意思的。
 
-##7 代码显示
+##6 代码显示
 
 
-###7.1 源码显示
+###6.1 源码显示
 
 注脚：
 在文中引用[^1]
@@ -173,23 +178,25 @@ link: http://mademistakes.com
 
 单行代码使用 `/assets/less/pygments.less`
 
-###7.2 Pygments Code blocks
+###6.2 Pygments Code blocks
 
 Pygments代码风格使用文件/assets/less/pygments.less，通过main.less来进行编译
 
-CSS风格
 
+####CSS风格
 
 {% highlight css %}
- #container {
-    float: left;
-    margin: 0 -240px 0 0;
-    width: 100%;
+#container {
+  float: left;
+  margin: 0 -240px 0 0;
+  width: 100%;
 }
 {% endhighlight %}
 
+####注意，如果需要在其中写 &#123;&#37; raw &#37;&#125; 需要像这么写`&#123;&#37; raw &#37;&#125;`，否则会被识别到，并转换使得下面的语法出现错误。
+由于这种方式是使用html 的代码转换方式，所以不能写在行代码块里面，如果写在行代码块里面就无法转义为HTML符号了。
 
-HTML风格
+####HTML风格
 
 {% highlight html %}
 {% raw %}
@@ -204,9 +211,10 @@ HTML风格
 {% endraw %}
 {% endhighlight %}
 
-这其中的{% raw %}就是显示嵌入滚动条的意思。
+这其中的raw就是显示嵌入滚动条的意思。
 
-ruby风格
+####ruby风格
+
 
 {% highlight ruby %}
 module Jekyll
@@ -234,18 +242,18 @@ end
 
 ###7.3 Standart Code Block
 
-{% raw %}
+    {% raw %}
     <nav class="pagination" role="navigation">
-        {% if page.previous %}
-            <a href="{{ site.url }}{{ page.previous.url }}" class="btn" title="{{ page.previous.title }}">Previous article</a>
+      {% if page.previous %}
+        <a href="{{ site.url }}{{ page.previous.url }}" class="btn" title="{{ page.previous.title }}">Previous article</a>
         {% endif %}
         {% if page.next %}
             <a href="{{ site.url }}{{ page.next.url }}" class="btn" title="{{ page.next.title }}">Next article</a>
-        {% endif %}
+      {% endif %}
     </nav><!-- /.pagination -->
-{% endraw %}
+    {% endraw %}
 
-标准的代码块模式直接放在`{% raw %}` 中就可以了。
+标准的代码块模式直接放在raw中就可以，在raw之前需要插入两个tab按键来进行格式申明。
 
 ###7.4 Fenced Code Blocks
 另一种代码块模式
@@ -254,13 +262,14 @@ end
 同样在_config.yml 也可以对coderay进行相关的配置
 
 这种配置方法也比较有意思
+
 ####css类型使用如下的表示方法
 
 ~~~ css
-#container {
-    float: left;
-    margin: 0 -240px 0 0;
-    width: 100%;
+  #container {
+      float: left;
+      margin: 0 -240px 0 0;
+      width: 100%;
 }
 ~~~
 
@@ -302,5 +311,11 @@ end
 
 详细的参考可以查看这里[Fenced Code Blocks](https://pythonhosted.org/Markdown/extensions/fenced_code_blocks.html)
 
+##问题定位
 
+####问题1： 经常出现&#123;&#37;highlight ruby&#37;&#125; 之间的代码无法正常显示的问题
+需要检查前后是否有错误的&#123;&#37; raw &#37;&#125;造成的错误匹配，导致highlight无法正常匹配造成。
+同时请注意标准代码应该是两个tab定义的。
 
+####问题2: 在任何markdown文档中都不要尽量不要使用&#123;&#37;highlight ruby&#37;&#125;
+如果一定需要写这些，最好使用相对应的代码来进行表达，否则可能出现编译不通过或者导致页面混乱。
