@@ -68,7 +68,7 @@ H<sub>2</sub>O  小字体  水
 * Item two
 * Item three
 
-### 表格，这个是在太麻烦了
+### 表格，这个实在太麻烦了
 
 | Header1 | Header2 | Header3 |
 |:--------|:-------:|--------:|
