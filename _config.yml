@@ -11,7 +11,7 @@ url:              http://pengjunjie.com
 owner:
   name:           yourwilliam
   avatar:         bio-photo.jpg
-  email:          yourwilliam@email.com
+  email:          yourwilliam@gmail.com
   # Social networking links used in footer. Update and remove as you like.
   twitter:
   facebook:
@@ -26,7 +26,7 @@ owner:
 
 # Analytics and webmaster tools stuff goes here
 google_analytics:
-google_verify:
+google_verify:<meta name="google-site-verification" content="3vEn1_fXhoqMpIhn7tfcWHXJsBbcXAMVbhpkYAF4IkU" />
 # https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
 bing_verify:
 
