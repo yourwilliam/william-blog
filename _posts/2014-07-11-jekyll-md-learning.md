@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Jekylk markdown入门
+title: Jekyll markdown入门
 description: "markdown语法入门学习，留给自己写blog用"
 modified: 2014-07-13
 category: articles
