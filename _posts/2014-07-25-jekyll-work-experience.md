@@ -18,5 +18,4 @@ share: true
 4. 如果对_config.yml配置有修改，push到github之后，最好关注一下邮件，如果github编译失败，会发送邮件到本地邮箱。
 
 
-
 ————————未完待续。
