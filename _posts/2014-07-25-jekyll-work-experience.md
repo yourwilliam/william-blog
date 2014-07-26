@@ -16,6 +16,8 @@ share: true
 	google端数据为 `<meta name="google-site-verification" content="3vEn1_fXhoqMpIhn7tfcWHXJsBbcXAMVbhpkYAF4IkU">`
 	在_config.yml中配置相应的站长检测配置`google_verify:  3vEn1_fXhoqMpIhn7tfcWHXJsBbcXAMVbhpkYAF4IkU`
 4. 如果对_config.yml配置有修改，push到github之后，最好关注一下邮件，如果github编译失败，会发送邮件到本地邮箱。
+5. 如果要在代码区段内插入反引号，你可以用多个反引号来开启和结束代码区段. ``There is a literal backtick (`) here.``
+
 
 
 ————————未完待续。
