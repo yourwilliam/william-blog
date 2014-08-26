@@ -14,7 +14,7 @@ share: true
 ###基本虚拟libvert虚拟化网络
 
 <figure>
-     <a href="{{ site.url }}/images/bolg2014/libvert_network_architecture.png"><img src="{{ site.url }}/images/bolg2014/libvert_network_architecture.png"></a>
+     <a href="{{ site.url }}/images/blog2014/libvert_network_architecture.png"><img src="{{ site.url }}/images/blog2014/libvert_network_architecture.png"></a>
      <figcaption>libvert network 网络架构图</figcaption>
 </figure>
 
