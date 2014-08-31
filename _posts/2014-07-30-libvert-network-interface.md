@@ -2,7 +2,7 @@
 layout: post
 title: libvert 虚拟化网络配置详解
 description: "libvert 虚拟化网络配置详解，分析libvert所支持的几种联网方式"
-modified: 2014-07-30
+modified: 2014-08-27
 category: articles
 tags: [libvert,interface,network,虚拟化,网络]
 comments: true
@@ -10,6 +10,8 @@ share: true
 ---
 
 ##libvert 虚拟化网络配置详解
+
+具体的libvert xml文件格式指南可以参考[Domain XML format](http://libvirt.org/formatdomain.html#elementsNICSHostdev)
 
 ###基本虚拟libvert虚拟化网络
 
@@ -238,7 +240,94 @@ bridge提供虚拟机直接连接到LAN的功能。为虚拟机提供类似物�
 #### PCI Passthrough
 >A PCI network device (specified by the <source> element) is directly assigned to the guest using generic device passthrough, after first optionally setting the device's MAC address to the configured value, and associating the device with an 802.1Qbh capable switch using an optionally specified <virtualport> element (see the examples of virtualport given above for type='direct' network devices).
 
-用于将客户虚拟机直接绑定到PCI物理网卡，实现PCI的 passthrough.
+用于将客户虚拟机直接绑定到PCI物理网卡，实现PCI的 passthrough. 使用可选的配置设备的mac地址，然后使用virtualport标签来是设备同步802.10bh交换能力。
+
+	...
+	<devices>
+    <interface type='hostdev' managed='yes'>
+      <driver name='vfio'/>
+      <source>
+        <address type='pci' domain='0x0000' bus='0x00' slot='0x07' function='0x0'/>
+      </source>
+      <mac address='52:54:00:6d:90:02'>
+      <virtualport type='802.1Qbh'>
+        <parameters profileid='finance'/>
+      </virtualport>
+    </interface>
+    </devices>
+    ...
+
+
+#### Multicast tunnel
+多播组，一个多播组用来建立一个虚拟网络。 多台虚拟机的devices设置同一个多播组的虚拟机能够进行跨host互访。
+
+	...
+	<devices>
+	  <interface type='mcast'>
+	    <mac address='52:54:00:6d:90:01'>
+	    <source address='230.0.0.1' port='5558'/>
+	  </interface>
+	</devices>
+	...
+
+#### Tcp tunnel
+Tcp Client/Server 构架同样可以用来组建一个虚拟网络。一个虚拟机提供网络的服务端，其他的虚拟机配置成为客户端。虚拟机之间的网络流量将Server作为路由，所有的都通过路由进行相互访问。
+
+	...
+	<devices>
+	  <interface type='server'>
+	    <mac address='52:54:00:22:c9:42'/>
+	    <source address='192.168.0.1' port='5558'/>
+	  </interface>
+	  ...
+	  <interface type='client'>
+	    <mac address='52:54:00:8b:c9:51'/>
+	    <source address='192.168.0.1' port='5558'/>
+	  </interface>
+	</devices>
+	...
+
+#### set the NIC model
+
+	...
+	<devices>
+	  <interface type='network'>
+	    <source network='default'/>
+	    <target dev='vnet1'/>
+	    <model type='ne2k_pci'/>
+	  </interface>
+	</devices>
+	...
+
+可以用以上方法设置网卡的模式。 这个type的类型是通过不同的hypervisor类型来进行定义的。
+在qume和KVM中可以使用如下方式查询支持的模型列表：
+
+	qemu -net nic,model=? /dev/null
+	qemu-kvm -net nic,model=? /dev/null
+
+可以查询到相应的模型类型：`ne2k_isa i82551 i82557b i82559er ne2k_pci pcnet rtl8139 e1000 virtio`
+
+#### Setting NIC driver-specific options
+网卡的特殊driver类型选项。
+
+	...
+	<devices>
+	  <interface type='network'>
+	    <source network='default'/>
+	    <target dev='vnet1'/>
+	    <model type='virtio'/>
+	    <driver name='vhost' txmode='iothread' ioeventfd='on' event_idx='off' queues='5'/>
+	  </interface>
+	</devices>
+	...
+
+
+
+
+
+
+
+
 
 
 
