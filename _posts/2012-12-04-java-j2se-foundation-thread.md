@@ -41,6 +41,56 @@ share: true
 	join(long mills, int nanos)
 
 
+#### 线程基本问题
+
+* run() 的访问控制符必须是public，返回值必须是void run() 不带参数。
+* Java是面向对象的程序设计语言，不同的对象的数据是不同的，r1,r2有各自的run方法，而synchronize使同一对象的多个线程，在某个时刻只有其中一个线程可以访问这个对象的synchronize数据
+
+代码如下
+
+	public class ThreadTest implements Runnable
+	{
+		public synchronized void run()
+		{
+			for(int i=0; i<10;i++)
+			{
+				System.out.print(" " + i);
+			}
+		}
+
+		public static void main(String[] args)
+		{
+			Runnable r1 = new ThreadTest();
+			Runnable r2 = new ThreadTest();
+			Thread t1 = new Thread(r1);
+			Thread t2 = new Thread(r2);
+			t1.start();
+			t2.start();
+		}
+	}
+
+或者
+
+	public static void main(String[] args)
+	{
+		Runnable r = new ThreadTest();
+		Thread t1 = new Thread(r);
+		Thread t2 = new Thread(r);
+		t1.start();
+		t2.start();
+	}
+
+* Thread 提供方法 `setProperity(Thread.MAX_PRIORITY)` 优先级并不代表一个执行完再执行下一个，而是优先开始
+* 一个线程在sleep的时候，并不会释放对象的锁标识
+* join()方法，能够使调用该方法的线程在此之前执行完毕
+* sleep方法可以使低优先级的线程得到执行机会，当然也可以让同优先级和高优先级的线程有执行的机会，而yield()方法只能使同优先级的线程有执行的机会。
+* wait()、notify()、notifyAll() 这三个方法用于协调多个线程对共享数据的存取，所以必须在synchronized语句块内使用者三个方法。
+* wait() 可以释放锁标识
+* 当线程执行了对一个特定对象的wait()调用时，那个线程被放到与那个对象相关的等待池中，此外，调用wait()的线程会自动释放对象的锁标识
+* 对一个特定的对象执行notify()调用时，将从对象的等待池中移走任意一个线程，并放到锁标识等待池中，那里的线程一直等待，直到可以获得对象的锁标识。
+* notifyAll()方法将从对象等待池中移走所有等待那个对象的线程并放到锁标识等待池中。
+* 不管是否有线程等待都可以调用notify()
+
 
 
 
