@@ -29,6 +29,7 @@ google_analytics:
 google_verify:  3vEn1_fXhoqMpIhn7tfcWHXJsBbcXAMVbhpkYAF4IkU
 # https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
 bing_verify:    C6B474FFAAE9B1D3CEE8D5C23A26D1B9
+baidu_verify:   GaBRj0Frgr
 
 # Links to include in top navigation
 # For external links add external: true
