@@ -140,3 +140,16 @@ settings.xml的配置如下：
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
+
+
+##### 添加第三方jar包依赖
+
+有些自己导入的类需要导入到本地仓库的，可以在nexus中将pom文件和jar包导入第三方库即可。
+
+具体方法：View/Repositories -> Repositories -> 3rd party -> artifact upload -> GAV Definition 选择 From POM (此时既是通过pom导入相关类) -> Select Artifact(s) for Upload -> 导入相应的jar 包和pom文件即可。
+
+
+##### 添加第三方其他库文件
+
+有些工程需要依赖第三方库文件。 可以在nexus中导入proxy工程的方式，就可以增加新的依赖库。
+
