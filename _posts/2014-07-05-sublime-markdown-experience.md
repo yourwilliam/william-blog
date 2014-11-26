@@ -37,6 +37,8 @@ markdown preview适合于本地修改完成后在本地预览md最终的样式�
 Monokai extended这个color scheme支持Markdown语法高亮。
 同样也是使用sublime text的Package install搜索Monokai Extended，安装之后通过Preferences>Color Scheme>Monokai Extended启用。
 
+当前正在使用的就是这个插件，提供语法高亮，并可以直接在sublime里面显示出来。
+
 
 #### **Markdown Extender**
 
