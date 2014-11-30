@@ -27,3 +27,16 @@ mac 上的ssh软件，提供分屏、搜索、历史记录、自动刷新等功�
 附上官方链接[iTerm2](http://iterm2.com/index.html)
 
 ### ZSH 
+
+
+### xmarks for macs 
+
+在mac下用Safari会省电和快速，并且快捷键会舒服一些，在Windows下chrome又是不二首选，在iPad上也是习惯用Safari，但是手机又是Android的被强制切换到chrome浏览器。换来换去的书签同步总是一个大麻烦，搜索了好久找到了一块比较好的可以同步所有书签的软件，而且还是免费版。
+
+xmarks可以同时同步MAC safari、MAC chrome、Windows chrome、windows IE、IOS safari、IOS chrome、android safari、android chrome等平台的书签软件。
+
+下载地址： [xmarks](http://download.xmarks.com/download/all)
+chrome可以直接在应用商店里面下载xmarks插件即可。
+
+
+
