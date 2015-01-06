@@ -76,6 +76,11 @@ HotSpot虚拟机默认Eden和Survivor的大小比例是8：1。
 
 #####垃圾收集器
 
+<figure>
+     <a href="{{ site.url }}/images/blog2014/jvm_gc_generation.jpg"><img src="{{ site.url }}/images/blog2014/jvm_gc_generation.jpg"></a>
+     <figcaption>Java GC收集器</figcaption>
+</figure>
+
 ######Serial收集器
 1. 单线程收集器。在垃圾收集时，必须暂停其他所有工作线程(Stop The World)。
 2. **现代虚拟机运行在Client模式下得默认新生代收集器**。桌面应用场景中分配虚拟机内存一般只有几十到一两百兆的新生代，停顿时间可以控制在几十毫秒之内。
@@ -117,6 +122,10 @@ HotSpot虚拟机默认Eden和Survivor的大小比例是8：1。
 
 可以参考这篇文章 [http://blog.sina.com.cn/s/blog_4080505a0101i6cr.html](http://blog.sina.com.cn/s/blog_4080505a0101i6cr.html)
 
+#####MinorGC和Full GC的区别
+新生代GC(Minor GC)指发生在新生代的垃圾收集动作。MinorGC非常频繁，且回收速度一般较快。
+老年代GC(Major GC/Full GC)指发生在老年代的垃圾收集动作。出现了Major GC，经常会伴随着至少一次的Minor GC(但非绝对的)。MajorGC的速度一般会比MinorGC慢10倍以上。
+
 
 #####Serial/Serial Old收集器下得内存分配和回收机制
 1. **对象优先在新生代Eden区中分配**。当Eden区没有足够的空间进行分配时，虚拟机将发起一次MinorGC。
@@ -128,6 +137,125 @@ HotSpot虚拟机默认Eden和Survivor的大小比例是8：1。
 7. -XX:MaxTenuringThreshold来设置对象晋升老年代的年龄阈值。
 8. **动态年龄判定**，虚拟机并不是总要求对象的年龄必须达到MaxTenuringThreshold才能晋升老年代，如果在Survivor中空间中相同年龄所有对象大小的总和大于Survivor空间的一半，年龄大于或等于该年龄的对象就可以直接进入老年代。
 9. **空间分配担保**（在MinorGC时如果Survivor空间无法容纳内存回收后的新生代对象，则需要老年代进行这样的担保），在发生MinorGC时，虚拟机会检测之前每次晋升到老年代的平均大小是否大于老年代的剩余空间大小，如果大于，则改为一次FullGC。如果小于，则查看HandlePromotionFailure设置是否允许担保失败，如果允许则进行MinorGC，如果不允许则进行一次FullGC。
+
+
+
+####GC 日志和参数定义
+
+
+如果希望查看程序的GC日志，需要在启动参数中增加参数`-verbose:gc` ，这个开关用于显示GC内容。可以显示最忙和最空闲收集行为发生的时间、收集前后的内存大小、收集需要的时间等。
+
+
+`-XX:+printGCdetails` : 输出详细GC日志，可以详细了解GC中的变化。
+
+`-XX:+PrintGCTimeStamps` : 输出GC的时间戳（以基准时间的形式）,可以了解这些垃圾收集发生的时间，自JVM启动以后以秒计量。
+
+`-XX:+PrintGCDateStamps` : 输出GC的时间戳（以日期的形式，如 2013-05-04T21:53:59.234+0800）
+
+`-XX:+PrintHeapAtGC` : 在进行GC的前后打印出堆的信息, 了解堆的更详细的信息。
+
+`-XX:=PrintTenuringDistribution` : 开关了解获得使用期的对象权。
+
+`-Xloggc:$CATALINA_BASE/logs/gc.log` : gc日志产生的路径
+
+`-XX:+PrintGCApplicationStoppedTime` : 输出GC造成应用暂停的时间
+
+也可以使用一些离线工具来进行GC日志的具体分析。比如sun的[gchisto](https://java.net/projects/gchisto)，[gcviewer](https://github.com/chewiebug/GCViewer)，这些都是开源的工具，用户可以直接通过版本控制工具下载其源码，进行离线分析。
+
+
+####Sun 垃圾收集实现
+
+实现代码
+
+	/**
+	*参数： -verbose:gc -Xms20M -Xmx20M -Xmn10M -XX:SurvivorRatio=8 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintHeapAtGC
+	*/
+	private static final int _1MB = 1024 * 1024;
+
+	public static void main(String[] args) {
+
+		byte[] allocation1, allocation2, allocation3, allocation4, allocation5;
+		allocation1 = new byte[2 * _1MB];
+		allocation2 = new byte[2 * _1MB];
+		allocation3 = new byte[2 * _1MB];
+		System.out.println("allocation1 = " + allocation1 + "\n allocation2 = " +allocation2 + "\n allocation3 = " + allocation3);
+		allocation4 = new byte[4 * _1MB]; // 此时出现一次MinorGC
+		//allocation1 = null;
+		allocation5 = new byte[2 * _1MB];
+		//byte[] allocation6 = new byte[6 * _1MB];
+	}
+
+
+返回结果：
+
+	allocation1 = [B@150697e2
+	 allocation2 = [B@2a36bb87
+	 allocation3 = [B@4fd281f1
+	{Heap before GC invocations=1 (full 0):
+	 PSYoungGen      total 9216K, used 7143K [0x00000007ff600000, 0x0000000800000000, 0x0000000800000000)
+	  eden space 8192K, 87% used [0x00000007ff600000,0x00000007ffcf9eb0,0x00000007ffe00000)
+	  from space 1024K, 0% used [0x00000007fff00000,0x00000007fff00000,0x0000000800000000)
+	  to   space 1024K, 0% used [0x00000007ffe00000,0x00000007ffe00000,0x00000007fff00000)
+	 ParOldGen       total 10240K, used 4096K [0x00000007fec00000, 0x00000007ff600000, 0x00000007ff600000)
+	  object space 10240K, 40% used [0x00000007fec00000,0x00000007ff000010,0x00000007ff600000)
+	 PSPermGen       total 21504K, used 2590K [0x00000007f9a00000, 0x00000007faf00000, 0x00000007fec00000)
+	  object space 21504K, 12% used [0x00000007f9a00000,0x00000007f9c87a70,0x00000007faf00000)
+	2015-01-05T15:18:41.818-0800: [GC-- [PSYoungGen: 7143K->7143K(9216K)] 11239K->15335K(19456K), 0.0048480 secs] [Times: user=0.01 sys=0.00, real=0.01 secs] 
+	Heap after GC invocations=1 (full 0):
+	 PSYoungGen      total 9216K, used 7143K [0x00000007ff600000, 0x0000000800000000, 0x0000000800000000)
+	  eden space 8192K, 87% used [0x00000007ff600000,0x00000007ffcf9eb0,0x00000007ffe00000)
+	  from space 1024K, 0% used [0x00000007fff00000,0x00000007fff00000,0x0000000800000000)
+	  to   space 1024K, 40% used [0x00000007ffe00000,0x00000007ffe68020,0x00000007fff00000)
+	 ParOldGen       total 10240K, used 8192K [0x00000007fec00000, 0x00000007ff600000, 0x00000007ff600000)
+	  object space 10240K, 80% used [0x00000007fec00000,0x00000007ff400030,0x00000007ff600000)
+	 PSPermGen       total 21504K, used 2590K [0x00000007f9a00000, 0x00000007faf00000, 0x00000007fec00000)
+	  object space 21504K, 12% used [0x00000007f9a00000,0x00000007f9c87a70,0x00000007faf00000)
+	}
+	{Heap before GC invocations=2 (full 1):
+	 PSYoungGen      total 9216K, used 7143K [0x00000007ff600000, 0x0000000800000000, 0x0000000800000000)
+	  eden space 8192K, 87% used [0x00000007ff600000,0x00000007ffcf9eb0,0x00000007ffe00000)
+	  from space 1024K, 0% used [0x00000007fff00000,0x00000007fff00000,0x0000000800000000)
+	  to   space 1024K, 40% used [0x00000007ffe00000,0x00000007ffe68020,0x00000007fff00000)
+	 ParOldGen       total 10240K, used 8192K [0x00000007fec00000, 0x00000007ff600000, 0x00000007ff600000)
+	  object space 10240K, 80% used [0x00000007fec00000,0x00000007ff400030,0x00000007ff600000)
+	 PSPermGen       total 21504K, used 2590K [0x00000007f9a00000, 0x00000007faf00000, 0x00000007fec00000)
+	  object space 21504K, 12% used [0x00000007f9a00000,0x00000007f9c87a70,0x00000007faf00000)
+	2015-01-05T15:18:41.823-0800: [Full GC [PSYoungGen: 7143K->2343K(9216K)] [ParOldGen: 8192K->8192K(10240K)] 15335K->10535K(19456K) [PSPermGen: 2590K->2589K(21504K)], 0.0105960 secs] [Times: user=0.02 sys=0.00, real=0.01 secs] 
+	Heap after GC invocations=2 (full 1):
+	 PSYoungGen      total 9216K, used 2343K [0x00000007ff600000, 0x0000000800000000, 0x0000000800000000)
+	  eden space 8192K, 28% used [0x00000007ff600000,0x00000007ff849d00,0x00000007ffe00000)
+	  from space 1024K, 0% used [0x00000007fff00000,0x00000007fff00000,0x0000000800000000)
+	  to   space 1024K, 0% used [0x00000007ffe00000,0x00000007ffe00000,0x00000007fff00000)
+	 ParOldGen       total 10240K, used 8192K [0x00000007fec00000, 0x00000007ff600000, 0x00000007ff600000)
+	  object space 10240K, 80% used [0x00000007fec00000,0x00000007ff400030,0x00000007ff600000)
+	 PSPermGen       total 21504K, used 2589K [0x00000007f9a00000, 0x00000007faf00000, 0x00000007fec00000)
+	  object space 21504K, 12% used [0x00000007f9a00000,0x00000007f9c876a0,0x00000007faf00000)
+	}
+	Heap
+	 PSYoungGen      total 9216K, used 4801K [0x00000007ff600000, 0x0000000800000000, 0x0000000800000000)
+	  eden space 8192K, 58% used [0x00000007ff600000,0x00000007ffab04b0,0x00000007ffe00000)
+	  from space 1024K, 0% used [0x00000007fff00000,0x00000007fff00000,0x0000000800000000)
+	  to   space 1024K, 0% used [0x00000007ffe00000,0x00000007ffe00000,0x00000007fff00000)
+	 ParOldGen       total 10240K, used 8192K [0x00000007fec00000, 0x00000007ff600000, 0x00000007ff600000)
+	  object space 10240K, 80% used [0x00000007fec00000,0x00000007ff400030,0x00000007ff600000)
+	 PSPermGen       total 21504K, used 2599K [0x00000007f9a00000, 0x00000007faf00000, 0x00000007fec00000)
+	  object space 21504K, 12% used [0x00000007f9a00000,0x00000007f9c89e30,0x00000007faf00000)
+
+可以根据这个了解到部分Sun Java虚拟机GC实现细节：
+
+堆被划分成三个不同的区域：新生代 ( PSYoungGen )、老年代 ( ParOldGen )、永久代（ PsPermGen）。 
+
+新生代 ( Young ) 又被划分为三个区域：
+Eden、From Survivor、To Survivor。
+这样划分的目的是为了使 JVM 能够更好的管理堆内存中的对象，包括内存的分配以及回收。 其中的比例默认为8:1:1， 也可以使用参数修改。
+
+新生代和老年代的比例一般为1:2， 也可以自己通过参数定义。
+JVM 每次只会使用 Eden 和其中的一块 Survivor 区域来为对象服务，所以无论什么时候，总是有一块 Survivor 区域是空闲着的。
+
+SUN JVM GC 使用是分代收集算法，即将内存分为几个区域，将不同生命周期的对象放在不同区域里。新的对象会先生成在Young area，也就是PSYoungGen中。在几次ＧＣ以后，如过没有收集到，就会逐渐升级到PSOldGen 及Tenured area(也就是PSPermGen)中。
+
+#####PSYoungGen ParOldGen PsPermGen区别
+在GC收集的时候，频繁收集生命周期短的区域(Young area)，因为这个区域内的对象生命周期比较短，GC 效率也会比较高。而比较少的收集生命周期比较长的区域(Old area or Tenured area)，以及基本不收集的永久区(Perm area)。
 
 
 
