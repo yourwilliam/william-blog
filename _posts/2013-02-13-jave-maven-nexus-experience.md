@@ -153,3 +153,32 @@ settings.xml的配置如下：
 
 有些工程需要依赖第三方库文件。 可以在nexus中导入proxy工程的方式，就可以增加新的依赖库。
 
+#####使用命令行建立Maven工程
+
+使用命令行建立Maven工程的方法： 
+
+        mvn archetype:generate -DgroupId=com.pengjunjie -DartifactId=idTest -DpackageName=nameTest -Dversion=1.0
+
+archetype:create  create是个被废弃或不被推荐使用的插件，在以后创建项目中请尽量使用archetype:generate
+
+创建一个项目，如下：
+
+        mvn archetype:generate -DgroupId=com.demo.mvn -DartifactId=mvnDemo -DpackageName=mvnDemo -Dversion=1.0
+
+进入要创建的目录
+
+创建web工程：
+        
+        mvn archetype:create -DgroupId=com.demo.mvn -DartifactId=mvnDemo -DarchetypeArtifactId=maven-archetype-webapp
+
+创建java工程：
+        
+        mvn archetype:create -DgroupId=com.demo.mvn -DartifactId=app
+
+建好后，进入工程目录，
+eclipse下编译：
+
+        mvn eclipse:clean eclipse:eclipse
+myeclipse下编译：
+
+        mvn eclipse:myeclipse -Dwtpversion=2.0
