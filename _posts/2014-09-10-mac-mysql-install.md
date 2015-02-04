@@ -46,7 +46,7 @@ MySQL的默认账号密码是root/root，正常情况下我们如果单纯的只
 在mac下安装之后，需要转换相关命令行
 	
 	alias mysql=/usr/local/mysql/bin/mysql
-	aliasmysqladmin=/usr/local/mysql/bin/mysqladmin
+	alias mysqladmin=/usr/local/mysql/bin/mysqladmin
 
 给root创建密码：
 
