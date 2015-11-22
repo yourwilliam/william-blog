@@ -21,13 +21,18 @@ markdown对于文档的制作非常方便，更利于程序员去书写自己的
 其中info.plist 定义为markdown的相关配置文件
 双击markdown img.alfredworkflow 就可以在alfred里面添加一个workflow，并且把相应的workflow中的定义
 如下
+<figure>
 <img src="7xocbv.com1.z0.glb.clouddn.com/test/1448170927829.png" width="845"/>
+<figcaption>创建工作流</figcaption>
+</figure>
 并且在Hotkey里面设置相应的markdown热键
 
 #####2. 设置
 在里面有mdimgsetup的一个Inputs 的Keyword，用于设置相应的初始化参数。在Alfred里面，输入mdimgsetup，进度相应设置页面
+<figure>
 <img src="7xocbv.com1.z0.glb.clouddn.com/test/1448171644750.png" width="604"/>
-
+<figcaption>启动配置</figcaption>
+</figure>
 进入后输入
 
 		; 详细设置见 https://github.com/tiann/markdown-img-upload
