@@ -91,3 +91,6 @@ markdown对于文档的制作非常方便，更利于程序员去书写自己的
 		    if not ret: util.notice("上传图片到图床失败，请检查网络后重试")
 		else:
     		util.notice("剪切版里没有图片！")
+
+修改处如下图
+<img src="http://7xocbv.com1.z0.glb.clouddn.com/test/1448180709115.png" width="671"/>
