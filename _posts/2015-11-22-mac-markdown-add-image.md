@@ -4,7 +4,7 @@ title: mac下markdown贴图流程优化安装
 description: "markdown贴图流程"
 modified: 2015-11-22
 category: articles
-tags: [mac,markdown，贴图]
+tags: [mac,markdown]
 comments: true
 share: true
 ---

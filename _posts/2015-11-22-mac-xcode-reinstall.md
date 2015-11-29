@@ -4,7 +4,7 @@ title: mac升级EI Capitan后Xcode被卸载
 description: "mac升级EI Capitan后Xcode被卸载，需要重装Xcode"
 modified: 2015-11-22
 category: articles
-tags: [mac,升级,Xcode,卸载]
+tags: [mac,Xcode]
 comments: true
 share: true
 ---
@@ -23,5 +23,6 @@ Mac刚刚升级了EI Capitan之后，老版本的Xcode会自动卸载，这时�
 
 		xcode-select --install
 
+完成后再运行git，发现问题得以解决。
 
 
